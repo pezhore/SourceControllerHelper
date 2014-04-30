@@ -1,0 +1,47 @@
+Source Control Sync
+
+Pre-Reqs:
+	+ Ruby 1.9
+	+ Ruby Dev Kit
+	+ Gems
+		- sinatra
+		- win32-service
+
+SSH Key Manipulation 
+	Assuming that the .ssh folder already exists in c:\users\yourUsername\, and that folder contains the properly
+	generated ssh keys, that folder must be copied into the system user profile following the steps below:
+
+	* Run the following command in an elevated command prompt in order to run as the local system user.  Note that 
+	  Interactive Services Detection will bring up a dialog asking you to "View the message".
+		
+		sc create testsvc binpath= "cmd /K start" type= own type= interact && sc start testsvc & sc delete testsvc
+	
+	* Open git bash:
+	
+		c:> "c:\Program Files (x86)\Git\bin\sh.exe" -login -i
+
+	* Copy the ssh folder to your home directory
+
+		$ cp -r /c/users/yourUsername/.ssh ~/
+
+	* Test SSH connectivity
+
+		$ ssh git@yourserver
+		Welcome to GitLab, YOUR NAME!
+		Connection to yourserver closed.
+
+Configuration:
+	+ Change contents of sinatra_svc.rb to match source git repository
+	+ copy appropriate ssh keys to c:\user\servicerunas\.ssh
+
+Installation
+	+ Open Administrator command prompt
+	+ execute 'ruby c:\path\to\script\regSinatraService.rb'
+
+Uninstallation
+	+ edit regSinatraService.rb
+	+ Comment out the top section, uncomment the delete section
+	+ Open Administrator command prompt
+	+ execute 'ruby c:\path\to\script\regSinatraService.rb'
+
+Note: SSH Key Manipulation taken from http://startbigthinksmall.wordpress.com/2012/04/26/how-to-authorize-local-system-account-for-openssh/
